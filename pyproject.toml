@@ -1,11 +1,14 @@
 [tool.poetry]
 name = "tls-client"
-version = "0.2.1"
+version = "1.1.0"
 description = "Advanced Python HTTP Client."
-authors = ["Florian Zager <your-email@example.com>"]
+authors = [
+    "Florian Zager <florian@zager-online.de>",
+    "Dmitry Nedelyaev <jtjag@mail.ru>"
+]
 license = "MIT"
 readme = "README.md"
-repository = "https://github.com/FlorianREGAZ/Python-Tls-Client"
+repository = "https://github.com/JTJag/python-tls-client"
 packages = [{ include = "tls_client" }]
 classifiers = [
     "Environment :: Web Environment",
