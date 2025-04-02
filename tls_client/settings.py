@@ -1,3 +1,4 @@
+# FIXME: You only need to import it for typecheck and make it a dev dependency.
 from typing_extensions import Literal, TypeAlias
 
 ClientIdentifiers: TypeAlias = Literal[

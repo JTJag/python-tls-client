@@ -4,13 +4,14 @@ from requests import Request, Response
 from collections import OrderedDict
 from .adapters import TLSClientAdapter
 from .config import TLSClientAdapterConfig
-from .__version__ import __version__
-
+from importlib.metadata import version
 from typing import Optional
 from json import dumps, loads
 import ctypes
 import uuid
 import requests
+
+__version__ = version("tls_client")
 
 class Session(requests.Session):
 
