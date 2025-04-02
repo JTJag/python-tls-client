@@ -4,12 +4,14 @@ from requests import Request, Response
 from collections import OrderedDict
 from .adapters import TLSClientAdapter
 from .config import TLSClientAdapterConfig
-
+from importlib.metadata import version
 from typing import Optional
 from json import dumps, loads
 import ctypes
 import uuid
 import requests
+
+__version__ = version("tls_client")
 
 class Session(requests.Session):
 
@@ -27,7 +29,7 @@ class Session(requests.Session):
 
         self.headers = CaseInsensitiveDict(
             {
-                "User-Agent": f"tls-client",
+                "User-Agent": f"tls-client/{__version__}",
                 "Accept-Encoding": "gzip, deflate, br",
                 "Accept": "*/*",
                 "Connection": "keep-alive",
