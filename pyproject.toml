@@ -26,6 +26,9 @@ include = ["tls_client/dependencies/*"]
 
 [tool.poetry.dependencies]
 python = "^3.11"
+typing-extensions = "^4.13.0"
+urllib3 = "^2.3.0"
+requests = "^2.32.3"
 
 
 [build-system]
