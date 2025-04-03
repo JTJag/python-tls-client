@@ -1,10 +1,13 @@
 from . import sessions
+from typing import Optional
+from .config import TLSClientAdapterConfig
 
-def request(method, url, **kwargs):
+def request(method, url, config: Optional[TLSClientAdapterConfig] = None, **kwargs):
     """Constructs and sends a :class:`Request <Request>`.
 
     :param method: method for the new :class:`Request` object: ``GET``, ``OPTIONS``, ``HEAD``, ``POST``, ``PUT``, ``PATCH``, or ``DELETE``.
     :param url: URL for the new :class:`Request` object.
+    :param config: :class TLSClientAdapterConfig config for tls-client
     :param params: (optional) Dictionary, list of tuples or bytes to send
         in the query string for the :class:`Request`.
     :param data: (optional) Dictionary, list of tuples, bytes, or file-like
@@ -44,7 +47,7 @@ def request(method, url, **kwargs):
     # By using the 'with' statement we are sure the session is closed, thus we
     # avoid leaving sockets open which can trigger a ResourceWarning in some
     # cases, and look like a memory leak in others.
-    with sessions.Session() as session:
+    with sessions.Session(config) as session:
         return session.request(method=method, url=url, **kwargs)
     
 def get(url, params=None, **kwargs):
