@@ -12,4 +12,6 @@
 # tls-client: https://github.com/bogdanfinn/tls-client
 # requests: https://github.com/psf/requests
 
+import requests
 from .sessions import Session
+from .api import delete, get, head, options, patch, post, put, request
