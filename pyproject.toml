@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tls-client"
-version = "1.1.0"
+version = "1.1.1"
 description = "Advanced Python HTTP Client."
 authors = [
     "Florian Zager <florian@zager-online.de>",
