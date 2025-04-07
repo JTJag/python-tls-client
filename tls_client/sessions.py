@@ -22,6 +22,50 @@ class Session(requests.Session):
         *args,
         **kwargs,  # for legacy support
     ) -> None:
+        """
+    Initialize the TLS client.
+
+    This constructor supports both the modern way of passing a `TLSClientConfig` object
+    and the legacy way using positional or keyword arguments. Legacy usage is deprecated
+    and will be removed in a future release.
+
+    :param config: Configuration for the TLS client. Can be either a `TLSClientConfig` instance
+                  or a legacy `client_identifier` string.
+    :type config: TLSClientConfig or str, optional
+    :param args: Positional arguments for legacy configuration.
+    :param kwargs: Additional keyword arguments. May include deprecated legacy fields
+                   or valid options such as `max_retries`.
+
+    :keyword int max_retries: Number of retries to use for the underlying TLS adapter.
+
+    .. deprecated:: 0.2.0
+        Using positional arguments or legacy keyword arguments is deprecated.
+        Please pass a `TLSClientConfig` instance instead.
+
+        The following legacy parameters are deprecated:
+
+        :keyword str client_identifier: Identifier of the TLS fingerprint preset (e.g., "chrome_112").
+        :keyword str ja3_string: Custom JA3 fingerprint string.
+        :keyword dict h2_settings: HTTP/2 SETTINGS frame values.
+        :keyword list h2_settings_order: Order of HTTP/2 SETTINGS keys.
+        :keyword list supported_signature_algorithms: Supported TLS signature algorithms.
+        :keyword list supported_delegated_credentials_algorithms: Delegated credentials algorithms.
+        :keyword list supported_versions: TLS versions to advertise.
+        :keyword list key_share_curves: Elliptic curves for key exchange.
+        :keyword str cert_compression_algo: Certificate compression algorithm.
+        :keyword bool additional_decode: Enable additional decoding logic.
+        :keyword list pseudo_header_order: Pseudo-header order for HTTP/2.
+        :keyword int connection_flow: HTTP/2 connection flow control value.
+        :keyword list priority_frames: HTTP/2 priority frame definitions.
+        :keyword list header_order: HTTP header order to send.
+        :keyword dict header_priority: Priority values for HTTP headers.
+        :keyword bool random_tls_extension_order: Randomize TLS extension order.
+        :keyword bool force_http1: Force HTTP/1.1 instead of HTTP/2.
+        :keyword bool catch_panics: Catch internal panics (used internally).
+        :keyword bool debug: Enable debug logging.
+        :keyword bool certificate_pinning: Enforce certificate pinning.
+        """
+        
         legacy_keys = [
             "client_identifier", "ja3_string", "h2_settings", "h2_settings_order",
             "supported_signature_algorithms", "supported_delegated_credentials_algorithms",
