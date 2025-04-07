@@ -3,7 +3,7 @@ from typing import Optional, Dict, List
 from .settings import ClientIdentifiers
 
 @dataclass
-class TLSClientAdapterConfig:
+class TLSClientConfig:
     # Examples:
     # Chrome --> chrome_103, chrome_104, chrome_105, chrome_106
     # Firefox --> firefox_102, firefox_104

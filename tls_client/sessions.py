@@ -3,7 +3,7 @@ from requests.structures import CaseInsensitiveDict
 from requests import Request, Response
 from collections import OrderedDict
 from .adapters import TLSClientAdapter
-from .config import TLSClientAdapterConfig
+from .config import TLSClientConfig
 from importlib.metadata import version
 from typing import Optional
 from json import dumps, loads
@@ -17,11 +17,11 @@ class Session(requests.Session):
 
     def __init__(
         self,
-        config: Optional[TLSClientAdapterConfig] = None,
+        config: Optional[TLSClientConfig] = None,
         **kwargs,  # for legacy support
     ) -> None:
         if config is None:
-            config = TLSClientAdapterConfig(**kwargs)
+            config = TLSClientConfig(**kwargs)
 
         self._session_id = str(uuid.uuid4())
         
