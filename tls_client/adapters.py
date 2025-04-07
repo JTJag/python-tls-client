@@ -10,7 +10,7 @@ from requests import Response
 from urllib3.util.retry import Retry
 from .cffi import request, freeMemory
 from .exceptions import TLSClientExeption
-from .config import TLSClientAdapterConfig
+from .config import TLSClientConfig
 # from ._compat.http_response import HTTPResponse
 from requests.structures import CaseInsensitiveDict
 from requests.cookies import extract_cookies_to_jar
@@ -25,7 +25,7 @@ class TLSClientAdapter(BaseAdapter):
         "config"
     ]
 
-    def __init__(self, config: TLSClientAdapterConfig, max_retries: int = DEFAULT_RETRIES):
+    def __init__(self, config: TLSClientConfig, max_retries: int = DEFAULT_RETRIES):
         super().__init__()
 
         self.config = config
