@@ -93,11 +93,14 @@ class TLSClientAdapter(BaseAdapter):
 
     def send(self, req, stream=False, timeout=30, verify=True, cert=None, proxies=None):
 
-        if req.body:
-            encoded_body = base64.b64encode(req.body).decode(
-                'utf-8')  # send bytes body as base64 for native lib
-        else:
+        if req.body is None:
             encoded_body = ""
+        elif isinstance(req.body, str):
+            encoded_body = base64.b64encode(req.body.encode('utf-8')).decode('utf-8')
+        elif isinstance(req.body, bytes):
+            encoded_body = base64.b64encode(req.body).decode('utf-8')
+        else:
+            raise TypeError(f"req.body must be str or bytes, got {type(req.body).__name__}")
 
         request_payload = {
             "followRedirects": False,  # requests make redirects with processing cookies
