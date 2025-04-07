@@ -5,7 +5,8 @@ from collections import OrderedDict
 from .adapters import TLSClientAdapter
 from .config import TLSClientConfig
 from importlib.metadata import version
-from typing import Optional
+from typing import Optional, Union
+import warnings
 from json import dumps, loads
 import ctypes
 import uuid
@@ -17,11 +18,48 @@ class Session(requests.Session):
 
     def __init__(
         self,
-        config: Optional[TLSClientConfig] = None,
+        config: Optional[Union[TLSClientConfig, str]] = None,
+        *args,
         **kwargs,  # for legacy support
     ) -> None:
+        legacy_keys = [
+            "client_identifier", "ja3_string", "h2_settings", "h2_settings_order",
+            "supported_signature_algorithms", "supported_delegated_credentials_algorithms",
+            "supported_versions", "key_share_curves", "cert_compression_algo",
+            "additional_decode", "pseudo_header_order", "connection_flow",
+            "priority_frames", "header_order", "header_priority",
+            "random_tls_extension_order", "force_http1", "catch_panics",
+            "debug", "certificate_pinning"
+        ]
+        used_legacy = False
+
+        if isinstance(config, TLSClientConfig):
+            pass
+        elif config is not None:
+            # config - is client_identifier
+            args = (config,) + args
+            config = None
+            used_legacy = True
+
         if config is None:
-            config = TLSClientConfig(**kwargs)
+            legacy_kwargs = dict(zip(legacy_keys, args))
+            legacy_kwargs.update(kwargs)
+
+            if not used_legacy:
+                used_legacy = any(key in kwargs for key in legacy_keys)
+
+            if used_legacy:
+                warnings.warn(
+                    "Using legacy positional arguments or legacy keyword arguments is deprecated. "
+                    "Use config=TLSClientConfig(...) instead.",
+                    DeprecationWarning,
+                    stacklevel=2,
+                )
+
+            config = TLSClientConfig(**legacy_kwargs)
+
+        for key in legacy_keys:
+            kwargs.pop(key, None)
 
         self._session_id = str(uuid.uuid4())
         
@@ -37,7 +75,7 @@ class Session(requests.Session):
         )
 
         self.adapters = OrderedDict()
-        adapter = TLSClientAdapter(config)
+        adapter = TLSClientAdapter(config, **kwargs)
         self.mount("https://", adapter)
         self.mount("http://", adapter)
 
