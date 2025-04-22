@@ -11,8 +11,7 @@ from urllib3.util.retry import Retry
 from .cffi import request, freeMemory
 from .exceptions import TLSClientExeption
 from .config import TLSClientConfig
-# from ._compat.http_response import HTTPResponse
-from requests.structures import CaseInsensitiveDict
+from urllib3._collections import HTTPHeaderDict
 from requests.cookies import extract_cookies_to_jar
 from requests.adapters import BaseAdapter, DEFAULT_RETRIES
 from requests.utils import get_encoding_from_headers, select_proxy
@@ -40,9 +39,10 @@ class TLSClientAdapter(BaseAdapter):
 
     def build_response(self, req, resp):
 
-        headers = CaseInsensitiveDict(
-            {k: ", ".join(v) for k, v in resp["headers"].items()}
-        )
+        headers = HTTPHeaderDict()
+        for key, values in resp["headers"].items():
+            for value in values:
+                headers.add(key, value)
 
         status_code = resp.get("status", 200)
         reason = http.HTTPStatus(status_code).phrase
